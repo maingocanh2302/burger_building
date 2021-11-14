@@ -1,5 +1,5 @@
 import react,{useState, Fragment } from 'react';
-import { Form, Input, InputNumber, Button } from 'antd';
+import { Form, Input, Button } from 'antd';
 import { Link } from 'react-router-dom';
 
 import CountryPhoneInput, { ConfigProvider } from 'antd-country-phone-input';
@@ -7,7 +7,8 @@ import en from 'world_countries_lists/data/en/world.json';
 
 import 'antd/dist/antd.css';
 import 'antd-country-phone-input/dist/index.css';
-
+import './BurgerBuilder.js';
+import "./BurgerBuilder.css";
 
 
 
@@ -36,17 +37,36 @@ const Checkout = () => {
   const onFinish = (values) => {
     console.log(values);
   };
-
+  const [salad,setSalad]= useState(0);
+  const [bacon,setBacon]= useState(0);
+  const [cheese,setCheese]= useState(0);
+  const [meat,setMeat]= useState(0);
   return (
     <Fragment>
-
-    <Form style={{width:500+"px", margin:"auto", marginTop:80+"px"}}> 
-    <Form.Item
-      name={['user', 'price']}
-      label="Price">
-      <Input/>
-    </Form.Item>
-    </Form>
+    <div className="Burger">
+    <div className="Top">
+    </div>
+    <div className="Salad">
+    Salad
+    </div>
+    <div className="Bacon">
+    Bacon
+    </div>
+    <div className="Cheese">
+    Cheese
+    </div>
+    <div className="Meat">
+    Meat
+    </div>
+    <div className="Bottom">
+    </div>
+    </div>
+    <table className = "price">
+      <tr>
+        <td>Price</td>
+        <td>${salad+bacon+cheese+meat}</td>
+      </tr>
+    </table>
     
     <Form 
     style={{width:600+"px", margin:"auto", marginTop:10+"px"}}

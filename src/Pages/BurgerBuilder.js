@@ -1,8 +1,10 @@
 import react, { useState } from 'react';
-import {Img} from 'react-image'
-import { Image } from 'antd';
+import {Img} from 'react-image';
 import { IDENTITY_KEY_LOCALSTORAGE } from '../Constant'
+import { Form, Input, Button } from 'antd';
 import "./BurgerBuilder.css";
+
+
 export default function BurgerBuilder() {
   const [credential, setCredential] = useState(JSON.parse(localStorage.getItem(IDENTITY_KEY_LOCALSTORAGE) ? localStorage.getItem(IDENTITY_KEY_LOCALSTORAGE) : '{}'));
   const [salad,setSalad]= useState(0);
@@ -51,10 +53,6 @@ export default function BurgerBuilder() {
       }
   }
   return (
-    // <div style={{marginTop: 100}}>
-    //   <div>Burger Builder </div>
-    //   <div> Loged in:  {credential?.email} </div>
-    //   </div>
     <div> 
     <div className="Burger">
     <div className="Top">
@@ -80,8 +78,8 @@ export default function BurgerBuilder() {
         <td>${salad+bacon+cheese+meat}</td>
       </tr>
     </table>
-    <table className= "burger-detail" >
     
+    <table className= "burger-detail" >
       <tr>
         <td> Salad</td>
         <td> <button onClick={()=> changeValue(SALAD,-1)}>Less</button></td>
@@ -107,7 +105,9 @@ export default function BurgerBuilder() {
         <td> <button onClick={()=> changeValue(MEAT,+1)}>More</button></td>
       </tr>
     </table>
-    {/* <button onClick=> </button> */}
+    <div className="hihi"> 
+      <button > <a href="">Check Out</a></button> 
+      </div>
     </div>
   )
 }

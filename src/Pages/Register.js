@@ -69,7 +69,7 @@ const Register = () => {
    
 
       <Form.Item wrapperCol={{ offset: 10, span: 16 }}>
-        <Button type="primary" htmlType="submit" className="Register-form-button" >
+        <Button type="primary" htmlType="submit" className="login-form-button" >
           Register
         </Button>
       </Form.Item>
@@ -77,7 +77,7 @@ const Register = () => {
       Or 
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 10, span: 16 }}> 
-      <Button> <a href="">Login</a></Button>
+      <Button> <a href="">Sign In</a></Button>
       </Form.Item>
     </Form>
   );
