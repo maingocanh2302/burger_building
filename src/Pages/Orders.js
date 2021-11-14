@@ -46,19 +46,25 @@ const Orders = () => {
       key: '5',
       ingredients: 'Emma',
       price: 32,
-      address: 'Sidney No. 1 Lake Park',
-      tags: ['cool', 'teacher'],
     },])
   }
+  function remove (){
+    const tam=[...data]
+    tam.pop()
+    setData(tam)
+
+
+  }
   return (<div>
-     <Button onClick={onButtonClick} type="primary" htmlType="submit">
+     
+    <Table className="order-table" columns={columns} dataSource={data} style={{marginTop: 100}}/>
+    <button onClick={onButtonClick} type="primary" htmlType="submit">
           Submit
-        </Button>
-    <Table className="order-table" columns={columns} dataSource={data} />
+        </button>
+        <button onClick={remove} type="primary" htmlType="submit">
+         Remove
+        </button>
   </div>)
 }
-// function onChange(pagination, filters, sorter, extra) {
-//   console.log('params', pagination, filters, sorter, extra);
-// }
 
 export default Orders;

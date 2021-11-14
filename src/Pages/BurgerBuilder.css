@@ -1,0 +1,66 @@
+.Burger {
+  width: 400px;
+  margin: auto;
+  margin-top: 100px;
+  text-align: center;
+  color: white;
+}
+.Burger .Top {
+  background-color: chocolate;
+  height: 75px;
+  border-radius: 30px;
+  margin-top: 10px;
+}
+.Burger .Salad {
+  background-color: rgb(30, 210, 54);
+  height: 55px;
+  line-height: 55px;
+  border-radius: 30px;
+  margin-top: 10px;
+}
+.Burger .Bacon {
+  background-color: rgb(94, 44, 8);
+  height: 55px;
+  line-height: 55px;
+  border-radius: 30px;
+  margin-top: 10px;
+}
+.Burger .Cheese {
+  background-color: rgb(210, 192, 30);
+  height: 55px;
+  line-height: 55px;
+  border-radius: 30px;
+  margin-top: 10px;
+}
+.Burger .Meat {
+  background-color: rgb(61, 31, 10);
+  height: 55px;
+  line-height: 55px;
+  border-radius: 30px;
+  margin-top: 10px;
+}
+.Burger .Bottom {
+  background-color: chocolate;
+  height: 55px;
+  border-radius: 30px;
+  margin-top: 10px;
+}
+.price {
+  margin: auto;
+  margin-top: 20px;
+}
+table {
+  width: 400px;
+  border: 1px solid ;
+}
+.burger-detail{
+    margin: auto;
+    margin-top: 10px;
+
+}
+.burger-detail td{
+    width: 10px;
+}
+/* table.burger-detail tr td :first-child{
+    width: 300px;
+} */

@@ -39,12 +39,17 @@ const Checkout = () => {
 
   return (
     <Fragment>
-    <img
-      src="https://i.postimg.cc/zfH0fZpW/Screen-Shot-2021-11-13-at-16-18-52.png"
-      style={{marginTop: 100+"px", margin: 100,width: 400, marginLeft: 500, marginRight: 500 }}
-    />
+
+    <Form style={{width:500+"px", margin:"auto", marginTop:80+"px"}}> 
+    <Form.Item
+      name={['user', 'price']}
+      label="Price">
+      <Input/>
+    </Form.Item>
+    </Form>
     
-    <Form style={{width:600+"px", margin:"auto", marginTop:10+"px"}}
+    <Form 
+    style={{width:600+"px", margin:"auto", marginTop:10+"px"}}
     {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
       <Form.Item
         name={['user', 'name']}

@@ -6,6 +6,7 @@ import LoginPage from "./Pages/Login";
 import BurgerBuilderPage from "./Pages/BurgerBuilder";
 import OrderPage from "./Pages/Orders"; 
 import CheckoutPage from './Pages/Checkout';
+import RegisterPage from './Pages/Register';
 
 
 const { Header, Content, Footer } = Layout;
@@ -20,13 +21,16 @@ function App() {
           <Link to="/">Burger Builder</Link>
         </Menu.Item>
         <Menu.Item key="orders">
-          <Link to="/">Orders</Link>
+          <Link to="/orders">Orders</Link>
         </Menu.Item>
         <Menu.Item key="login">
-          <Link to="/">Login</Link>
+          <Link to="/login">Login</Link>
+        </Menu.Item>
+        <Menu.Item key="register">
+          <Link to="/register">Register</Link>
         </Menu.Item>
         <Menu.Item key="checkout">
-          <Link to="/">Check Out</Link>
+          <Link to="/checkout">Check Out</Link>
         </Menu.Item>
       </Menu>
     </Header>
@@ -36,6 +40,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/orders" element={<OrderPage />} />
           <Route path="/checkout" element={<CheckoutPage />} />
+          <Route path="/register" element={<RegisterPage />} />
       </Routes>
       </div>
   </Layout>
