@@ -1,20 +1,53 @@
-import react, { useState } from 'react';
-import {Img} from 'react-image';
-import { IDENTITY_KEY_LOCALSTORAGE } from '../Constant'
-import { Form, Input, Button } from 'antd';
+import react, { useEffect, useState } from 'react';
+import { IDENTITY_KEY_LOCALSTORAGE } from '../Constant';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
+import {setCart} from '../store/store';
 import "./BurgerBuilder.css";
 
+const SALAD = "Salad"
+const BACON= "Bacon"
+const CHEESE = "Cheese"
+const MEAT = "Meat"
 
 export default function BurgerBuilder() {
   const [credential, setCredential] = useState(JSON.parse(localStorage.getItem(IDENTITY_KEY_LOCALSTORAGE) ? localStorage.getItem(IDENTITY_KEY_LOCALSTORAGE) : '{}'));
+  const cartState = useSelector((state)=>state.cart);
   const [salad,setSalad]= useState(0);
   const [bacon,setBacon]= useState(0);
   const [cheese,setCheese]= useState(0);
   const [meat,setMeat]= useState(0);
-  const SALAD = "Salad"
-  const BACON= "Bacon"
-  const CHEESE = "Cheese"
-  const MEAT = "Meat"
+  const [total, setTotal]= useState(0);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state)=>state.isAuthenticated)
+  useEffect(()=>{
+    if(cartState.salad)
+      setSalad(cartState.salad);
+    if(cartState.cheese)
+      setCheese(cartState.cheese);
+    if(cartState.bacon)
+      setBacon(cartState.bacon);
+    if(cartState.meat)
+      setMeat(cartState.meat);
+  },[])
+  useEffect(()=>{
+    setTotal(salad+cheese+bacon+meat);
+  },[salad,cheese,bacon,meat])
+  const handleSubmit = ()=>{
+    const cart = {
+      salad,
+      bacon,
+      cheese,
+      meat
+    };
+    dispatch(setCart(cart));
+    if(!isAuthenticated)
+      navigate('/login');
+    else{
+      navigate('/checkout');
+    }
+  }
   function changeValue(name, value) {
       switch (name) {
         case SALAD: 
@@ -57,17 +90,17 @@ export default function BurgerBuilder() {
     <div className="Burger">
     <div className="Top">
     </div>
-    <div className="Salad">
-    Salad
+    <div> 
+     {Array(salad).fill(<div className="Salad" value="Salad"> Salad </div>)}
     </div>
-    <div className="Bacon">
-    Bacon
+    <div>
+    {Array(bacon).fill(<div className="Bacon" value="Bacon"> Bacon </div>)}
     </div>
-    <div className="Cheese">
-    Cheese
+    <div>
+    {Array(cheese).fill(<div className="Cheese" value="Cheese"> Cheese </div>)}
     </div>
-    <div className="Meat">
-    Meat
+    <div>
+    {Array(meat).fill(<div className="Meat" value="Meat"> Meat </div>)}
     </div>
     <div className="Bottom">
     </div>
@@ -75,7 +108,7 @@ export default function BurgerBuilder() {
     <table className = "price">
       <tr>
         <td>Price</td>
-        <td>${salad+bacon+cheese+meat}</td>
+        <td>${total}</td>
       </tr>
     </table>
     
@@ -83,30 +116,26 @@ export default function BurgerBuilder() {
       <tr>
         <td> Salad</td>
         <td> <button onClick={()=> changeValue(SALAD,-1)}>Less</button></td>
-        <td> <span>{salad}</span></td>
         <td> <button onClick={()=> changeValue(SALAD,+1)}>More</button></td>
       </tr>
       <tr>
         <td> Bacon</td>
         <td> <button onClick={()=> changeValue(BACON,-1)}>Less</button></td>
-        <td> <span>{bacon}</span></td>
         <td> <button onClick={()=> changeValue(BACON,+1)}>More</button></td>
       </tr>
       <tr>
         <td> Cheese</td>
         <td> <button onClick={()=> changeValue(CHEESE,-1)}>Less</button></td>
-        <td> <span>{cheese}</span></td>
         <td> <button onClick={()=> changeValue(CHEESE,+1)}>More</button></td>
       </tr>
       <tr>
-        <td> Meet</td>
+        <td> Meat</td>
         <td> <button onClick={()=> changeValue(MEAT,-1)}>Less</button></td>
-        <td> <span>{meat}</span></td>
         <td> <button onClick={()=> changeValue(MEAT,+1)}>More</button></td>
       </tr>
     </table>
-    <div className="hihi"> 
-      <button > <a href="">Check Out</a></button> 
+    <div className="checkout"> 
+      <button onClick = {handleSubmit}> Check out</button> 
       </div>
     </div>
   )

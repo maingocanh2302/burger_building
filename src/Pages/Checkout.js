@@ -1,7 +1,7 @@
-import react,{useState, Fragment } from 'react';
+import react,{useState, Fragment, useEffect } from 'react';
 import { Form, Input, Button } from 'antd';
-import { Link } from 'react-router-dom';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
 import CountryPhoneInput, { ConfigProvider } from 'antd-country-phone-input';
 import en from 'world_countries_lists/data/en/world.json';
 
@@ -34,29 +34,49 @@ const validateMessages = {
 /* eslint-enable no-template-curly-in-string */
 
 const Checkout = () => {
-  const onFinish = (values) => {
-    console.log(values);
-  };
   const [salad,setSalad]= useState(0);
   const [bacon,setBacon]= useState(0);
   const [cheese,setCheese]= useState(0);
   const [meat,setMeat]= useState(0);
+  const [total, setTotal]= useState(0);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state)=>state.isAuthenticated)
+  const cartState = useSelector((state)=>state.cart);
+
+  useEffect(()=>{
+    if(cartState.salad)
+      setSalad(cartState.salad);
+    if(cartState.cheese)
+      setCheese(cartState.cheese);
+    if(cartState.bacon)
+      setBacon(cartState.bacon);
+    if(cartState.meat)
+      setMeat(cartState.meat);
+  },[])
+  useEffect(()=>{
+    setTotal(salad+cheese+bacon+meat);
+  },[salad,cheese,bacon,meat])
+  const onFinish = (values) => {
+    console.log(values);
+  };
+
   return (
     <Fragment>
-    <div className="Burger">
+   <div className="Burger">
     <div className="Top">
     </div>
-    <div className="Salad">
-    Salad
+    <div> 
+     {Array(salad).fill(<div className="Salad" value="Salad"> Salad </div>)}
     </div>
-    <div className="Bacon">
-    Bacon
+    <div>
+    {Array(bacon).fill(<div className="Bacon" value="Bacon"> Bacon </div>)}
     </div>
-    <div className="Cheese">
-    Cheese
+    <div>
+    {Array(cheese).fill(<div className="Cheese" value="Cheese"> Cheese </div>)}
     </div>
-    <div className="Meat">
-    Meat
+    <div>
+    {Array(meat).fill(<div className="Meat" value="Meat"> Meat </div>)}
     </div>
     <div className="Bottom">
     </div>
@@ -64,7 +84,7 @@ const Checkout = () => {
     <table className = "price">
       <tr>
         <td>Price</td>
-        <td>${salad+bacon+cheese+meat}</td>
+        <td>${total}</td>
       </tr>
     </table>
     

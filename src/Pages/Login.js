@@ -1,15 +1,41 @@
-import react from 'react';
+import react, {useEffect} from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate, Link } from 'react-router-dom';
+import {setToken,setAuth} from '../store/store';
 import './Login.css';
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+const fakeLogin = async ()=>{
+  await timeout(1000);
+  return 'this is fake token';
 
+}
 const Login = () => {
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);};
+  const isAuthenticated = useSelector((state)=>state.isAuthenticated)
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    if(isAuthenticated)
+      navigate('/')
+  },[])
+  const onFinish = async (values) => {
+    const formData = values; // TODO: useState to give form data
+    //TODO: fetch API
+    const token = await fakeLogin();
+    if(token){
+      dispatch(setToken(token));
+      dispatch(setAuth(true));
+      navigate('/');
+    }
+  };
   const onFinishFailed = (errorInfo) => {
       console.log('Failed:', errorInfo);
   };
+
+
   return (
     <Form
       style={{marginTop: 100}}
@@ -65,7 +91,7 @@ const Login = () => {
       Or 
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 10, span: 16 }}> 
-      <Button> <a href="">Sign Up</a></Button>
+      <Button>Sign Up</Button>
       </Form.Item>
     </Form>
   );
