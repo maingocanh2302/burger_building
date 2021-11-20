@@ -10,7 +10,24 @@ const postRequest = async (url, body, headers) => {
     })
   })
 }
+const getRequest = async (url, query, headers)=>{
+  query = {
+    ...query,
+    key : identityKey
+  }
+  const params = new URLSearchParams(query).toString()
+  return new Promise((resolve, reject) => {
+    axios.get(`${url}?${params}`, { headers }).then((data) => {
+      resolve(data?.data);
+    }).catch((err) => {
+      reject(err?.response?.data)
+    })
+  })
+}
 
 export default {
-  postRequest,
+  postRequest, 
+  getRequest
 }
+
+

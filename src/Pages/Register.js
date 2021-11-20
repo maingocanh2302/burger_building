@@ -1,7 +1,9 @@
-import react, { useState } from 'react';
+import react, { useState,useEffect } from 'react';
 import { Form, Input, Button, Checkbox, Alert } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
+import {useSelector, useDispatch} from 'react-redux';
+import {setToken,setAuth} from '../store/store';
 
 import authService from '../Service/auth.service';
 import './Login.css';
@@ -9,13 +11,19 @@ import './Login.css';
 const Register = () => {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const isAuthenticated = useSelector((state)=>state.isAuthenticated)
+  useEffect(()=>{
+    if(isAuthenticated)
+      navigate('/')
+  },[])
   const onFinish = async (values) => {
     try{
       await authService.register(values);
-      navigate('/');
+      dispatch(setAuth(true));
+      window.location.href = '/';
     } catch(err) {
-      setErrorMessage(err.error.message)
+      setErrorMessage(err.message)
     }
   }; 
   const onFinishFailed = (errorInfo) => {
@@ -67,7 +75,6 @@ const Register = () => {
         />
       </Form.Item>
    
-
       <Form.Item wrapperCol={{ offset: 10, span: 16 }}>
         <Button type="primary" htmlType="submit" className="login-form-button" >
           Register
@@ -77,7 +84,7 @@ const Register = () => {
       Or 
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 10, span: 16 }}> 
-      <Button> <a href="">Sign In</a></Button>
+      <Button> <a href="">Login</a></Button>
       </Form.Item>
     </Form>
   );

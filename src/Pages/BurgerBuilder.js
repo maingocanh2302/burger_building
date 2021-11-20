@@ -11,7 +11,7 @@ const CHEESE = "Cheese"
 const MEAT = "Meat"
 
 export default function BurgerBuilder() {
-  const [credential, setCredential] = useState(JSON.parse(localStorage.getItem(IDENTITY_KEY_LOCALSTORAGE) ? localStorage.getItem(IDENTITY_KEY_LOCALSTORAGE) : '{}'));
+  // const [credential, setCredential] = useState(JSON.parse(localStorage.getItem(IDENTITY_KEY_LOCALSTORAGE) ? localStorage.getItem(IDENTITY_KEY_LOCALSTORAGE) : '{}'));
   const cartState = useSelector((state)=>state.cart);
   const [salad,setSalad]= useState(0);
   const [bacon,setBacon]= useState(0);

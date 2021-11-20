@@ -4,15 +4,14 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import {setToken,setAuth} from '../store/store';
+
+import api from  "../Service/auth.service";
 import './Login.css';
+
 function timeout(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-const fakeLogin = async ()=>{
-  await timeout(1000);
-  return 'this is fake token';
 
-}
 const Login = () => {
   const isAuthenticated = useSelector((state)=>state.isAuthenticated)
   const navigate = useNavigate();
@@ -22,14 +21,10 @@ const Login = () => {
       navigate('/')
   },[])
   const onFinish = async (values) => {
-    const formData = values; // TODO: useState to give form data
-    //TODO: fetch API
-    const token = await fakeLogin();
-    if(token){
-      dispatch(setToken(token));
-      dispatch(setAuth(true));
-      navigate('/');
-    }
+    console.log(values);
+    const data = await api.login(values);
+    dispatch(setAuth(true));
+    window.location.href = '/';
   };
   const onFinishFailed = (errorInfo) => {
       console.log('Failed:', errorInfo);
@@ -49,16 +44,16 @@ const Login = () => {
       autoComplete="off"
     >
       <Form.Item wrapperCol={{ offset: 4, span: 16 }}
-        name="username"
+        name="email"
         rules={[
           {
             required: true,
-            message: 'Please input your Username!',
+            message: 'Please input your Email!',
           },
         ]}
         
       >
-        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+        <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Email" />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 4, span: 16 }}
         name="password"
@@ -84,14 +79,14 @@ const Login = () => {
 
       <Form.Item wrapperCol={{ offset: 10, span: 16 }}>
         <Button type="primary" htmlType="submit" className="login-form-button" >
-          Sign In
+          Login
         </Button>
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 11, span: 16 }}>
       Or 
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 10, span: 16 }}> 
-      <Button>Sign Up</Button>
+      <Button>Register</Button>
       </Form.Item>
     </Form>
   );
