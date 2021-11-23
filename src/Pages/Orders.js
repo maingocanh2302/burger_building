@@ -1,6 +1,17 @@
-import react,{useState} from 'react';
+import react,{useEffect, useState} from 'react';
 import { Table } from 'antd';
 import { Button} from 'antd';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import api from  "../Service/order.service";
+import {setToken,setAuth} from '../store/store';
+import axios from 'axios';
+import {getOrder_URL} from "../Constant/order";
+function timeout(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+
 const columns = [
   {
     title: 'Ingredients',
@@ -9,49 +20,76 @@ const columns = [
   {
     title: 'Price',
     dataIndex: 'price',
-    sorter: {
-      compare: (a, b) => a.price - b.price,
-      multiple: 1,
+    sorter: (a, b) => {
+      const comparer = new Intl.Collator([],{numeric: true});
+      return comparer.compare(a.price, b.price);
     },
   },
 ];
 
-const initdata = [
-  {
-    key: '1',
-    ingredients: 'Salad(2), Bacon(1), Cheese(0), Meat(2)',
-    price: 5,
-    
-  },
-  {
-    key: '2',
-    ingredients: 'Salad(2), Bacon(2), Cheese(1), Meat(2)',
-    price: 7,
-  },
-];
-const Orders = () => {
-  const [data, setData] = useState(initdata);
-  const onButtonClick = () => {
-    setData([...data, {
-      key: '3',
-      ingredients: 'Salad(3), Bacon(0), Cheese(2), Meat(1)',
-      price: 6,
-    },])
-  }
-  function remove (){
-    const tam=[...data]
-    tam.pop()
-    setData(tam)
+  const Orders= () => {
+  const isAuthenticated = useSelector((state)=>state.isAuthenticated)
+  let [orderData,setOrderData] = useState([]);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    if(!isAuthenticated)
+      navigate('/Login')
+    else 
+      getOrder();
+  },[])
+  const onFinish = async (values) => {
+    console.log(values);
+    const data = await api.order(values);
+    dispatch(setAuth(true));
+    window.location.href = '/';
+  };
+  const onFinishFailed = (errorInfo) => {
+      console.log('Failed:', errorInfo);
+  };
+  function getOrder (){
+    fetch(`${getOrder_URL}?auth=${localStorage.getItem("tokenID")}`).then(res=>{
+      return res.json();
+    }).then(dataRes=>{
 
+        console.log(dataRes);
+        const formatedRowData = doFormatToRowDatas(dataRes);
+        setOrderData(formatedRowData);
+      
+    })
+   
+    const doFormatToRowDatas =(userOrder) => {
+      console.log(userOrder)
+      if(userOrder !== null){
+        return Object.keys(userOrder).map((orderKey, index) => {
+          
+          const currentOrder =  userOrder[orderKey];
 
+          let ingredientsData = "";
+          if(currentOrder.ingredients){
+            Object.keys(currentOrder.ingredients).forEach((ingre)=>{
+              ingredientsData+= `${ingre}(${(currentOrder.ingredients)[ingre]}) `;
+            })
+          }
+          console.log(currentOrder.orderData);
+          console.log(currentOrder);
+          return {ingredients: ingredientsData, price: `${currentOrder.price} $`, details: currentOrder.orderData, key: index}
+        })
+      }
+      else{
+        return []
+      }
+    }
   }
-  return (<div>
+  console.log(`${getOrder_URL}${localStorage.getItem('tokenID')}`);
+  return (
+  <div>
      
-    <Table className="order-table" columns={columns} dataSource={data} style={{marginTop: 100}}/>
-    <Button onClick={onButtonClick} type="primary" htmlType="submit">
+    <Table className="order-table" columns={columns} dataSource={orderData} style={{marginTop: 100}}/>
+    <Button type="primary" htmlType="submit">
           Submit
         </Button>
-        <button onClick={remove} type="primary" htmlType="submit">
+        <button type="primary" htmlType="submit">
          Remove
         </button>
   </div>)

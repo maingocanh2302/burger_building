@@ -6,3 +6,4 @@ export const GOOGLE_API_URL = 'https://react-app-6be28.firebaseio.com/orders.jso
 
 export const IDENTITY_KEY_LOCALSTORAGE = 'identity';
 
+export const getOrder_URL = 'https://react-app-6be28.firebaseio.com/orders.json';

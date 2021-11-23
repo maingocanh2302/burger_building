@@ -6,3 +6,5 @@ const order = async (data) => {
     localStorage.setItem(IDENTITY_KEY_LOCALSTORAGE, JSON.stringify(response));
     return true;
   }
+  export default order;
+  

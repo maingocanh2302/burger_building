@@ -9,10 +9,13 @@ const register = async (data) => {
 const login = async(data)=>{
   const response = await api.postRequest(`${GOOGLE_API_URL}/verifyPassword`, data)
   localStorage.setItem(IDENTITY_KEY_LOCALSTORAGE, JSON.stringify(response));
+  localStorage.setItem('tokenID',response.idToken);
   return JSON.stringify(response);
 }
+
 export default {
   register,
   login
 };
+
 

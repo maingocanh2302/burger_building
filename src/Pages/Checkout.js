@@ -44,6 +44,7 @@ const Checkout = () => {
   const isAuthenticated = useSelector((state)=>state.isAuthenticated)
   const cartState = useSelector((state)=>state.cart);
 
+  
   useEffect(()=>{
     if(cartState.salad)
       setSalad(cartState.salad);
