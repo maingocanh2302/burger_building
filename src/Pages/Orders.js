@@ -48,7 +48,7 @@ const columns = [
       console.log('Failed:', errorInfo);
   };
   function getOrder (){
-    fetch(`${getOrder_URL}?auth=${localStorage.getItem("tokenID")}`).then(res=>{
+    fetch(`${getOrder_URL}?auth=${localStorage.getItem("tokenId")}`).then(res=>{
       return res.json();
     }).then(dataRes=>{
 
@@ -81,17 +81,17 @@ const columns = [
       }
     }
   }
-  console.log(`${getOrder_URL}${localStorage.getItem('tokenID')}`);
+  console.log(`${getOrder_URL}${localStorage.getItem('tokenId')}`);
   return (
   <div>
      
     <Table className="order-table" columns={columns} dataSource={orderData} style={{marginTop: 100}}/>
-    <Button type="primary" htmlType="submit">
+    {/* <Button type="primary" htmlType="submit">
           Submit
         </Button>
         <button type="primary" htmlType="submit">
          Remove
-        </button>
+        </button> */}
   </div>)
 }
 

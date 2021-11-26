@@ -1,6 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Button} from 'antd';
 import { Routes, Route, Link } from "react-router-dom";
 import LoginPage from "./Pages/Login";
 import BurgerBuilderPage from "./Pages/BurgerBuilder";
@@ -12,19 +12,22 @@ import {IDENTITY_KEY_LOCALSTORAGE } from './Constant';
 import { useDispatch,useSelector } from 'react-redux';
 import {setAuth} from './store/store';
 import { useNavigate } from 'react-router';
+const { SubMenu } = Menu;
+
 const { Header, Content, Footer } = Layout;
 function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() =>{
-    if(localStorage[IDENTITY_KEY_LOCALSTORAGE])
+    if(localStorage["tokenId"])
       dispatch(setAuth(true));
     else
       dispatch(setAuth(false));
   },[]);
   const handleLogout = ()=>{
-    localStorage.removeItem('tokenId');
-    navigate('/login');
+    localStorage.clear();
+    window.location.reload();
+
   }
   return (
     <Layout>
@@ -41,22 +44,33 @@ function App() {
         <Menu.Item key="checkout">
           <Link to="/checkout">Check Out</Link>
         </Menu.Item>
+  
         {
-        localStorage.getItem('tokenId')?
-         <Menu.Item key="logout" onClick ={handleLogout}>
-         Logout
-         </Menu.Item>:
-          <>
-        <Menu.Item key="login">
-          <Link to="/login">Login</Link>
-        </Menu.Item>
-        <Menu.Item key="register">
-          <Link to="/register">Register</Link>
-        </Menu.Item>
-          </>
+          localStorage.getItem('tokenId')?
+            <>
+            <Menu.Item style={{marginLeft:650+"px"}}>
+            WellCome
+              {
+                " "+localStorage["username"]
+              }
+            </Menu.Item>
+            <Menu.Item key="logout" onClick ={handleLogout}>
+            Logout
+            </Menu.Item>
+            </>
+          :
+            <>
+          <Menu.Item key="login" style = {{marginLeft:800+'px'}}>
+            <Link to="/login">Login</Link>
+          </Menu.Item>
+          <Menu.Item key="register">
+            <Link to="/register">Register</Link>
+          </Menu.Item>
+            </>
         }
-        
+      
       </Menu>
+
     </Header>
       <div className="site-layout-background" style={{ padding: 24, minHeight: 380 }}>
       <Routes>
