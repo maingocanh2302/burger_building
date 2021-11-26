@@ -1,10 +1,10 @@
 import react,{useState, Fragment, useEffect } from 'react';
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, message} from 'antd';
+import { useForm } from 'antd/lib/form/Form';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate, Link } from 'react-router-dom';
 import CountryPhoneInput, { ConfigProvider } from 'antd-country-phone-input';
 import en from 'world_countries_lists/data/en/world.json';
-
 import 'antd/dist/antd.css';
 import 'antd-country-phone-input/dist/index.css';
 import './BurgerBuilder.js';
@@ -43,7 +43,49 @@ const Checkout = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state)=>state.isAuthenticated)
   const cartState = useSelector((state)=>state.cart);
+  const [form] = useForm();
 
+  function checkoutHandle(){
+    const api_URL = 'https://react-app-6be28.firebaseio.com/orders.json?auth=';
+    const tokenID = localStorage.getItem(`tokenID`);
+    const data = {};
+    data.orderData= form.getFieldsValue();
+    data.price = total;
+    data.useId= localStorage.getItem(`userId`);
+    data.ingredients={
+      bacon,
+      cheese,
+      meat,
+      salad
+    }
+    fetch(`${api_URL}${tokenID}`,{
+      method:"post",
+      headers:{
+        "accept":"application/json",
+        "content-type":"application/json"
+      },
+      body : JSON.stringify(data)
+    }).then(
+      res=>{
+        return res.json();
+
+      }
+    ).catch(
+      err=>{
+        console.log(err);
+      }
+    ).then(
+      dataRes =>{
+        if(dataRes.error)
+          {
+            message.error('order fail');
+          }
+        else{
+          message.success('Order success');
+        }
+      }
+    )
+  }
   
   useEffect(()=>{
     if(cartState.salad)
@@ -90,9 +132,10 @@ const Checkout = () => {
     </table>
     
     <Form 
+    form={ form}
     style={{width:600+"px", margin:"auto", marginTop:10+"px"}}
     {...layout} name="nest-messages" onFinish={onFinish} validateMessages={validateMessages}>
-      <Form.Item
+      <Form.Item 
         name={['user', 'name']}
         label="Name"
         rules={[
@@ -138,7 +181,7 @@ const Checkout = () => {
       </Form.Item>
 
       <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 12 }}>
-        <Button type="primary" htmlType="submit">
+        <Button onClick={checkoutHandle} type="primary" htmlType="submit">
           Order
         </Button>
       </Form.Item>

@@ -23,8 +23,9 @@ const Login = () => {
   const onFinish = async (values) => {
     console.log(values);
     const data = await api.login(values);
+    console.log(data);
     dispatch(setAuth(true));
-    window.location.href = '/';
+    navigate('/');
   };
   const onFinishFailed = (errorInfo) => {
       console.log('Failed:', errorInfo);
@@ -33,6 +34,7 @@ const Login = () => {
 
   return (
     <Form
+      
       style={{marginTop: 100}}
       name="normal-login"
       className="login-form"

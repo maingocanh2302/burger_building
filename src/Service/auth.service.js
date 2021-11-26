@@ -7,10 +7,12 @@ const register = async (data) => {
   return true;
 }
 const login = async(data)=>{
+  data.returnSecureToken=true;
   const response = await api.postRequest(`${GOOGLE_API_URL}/verifyPassword`, data)
   localStorage.setItem(IDENTITY_KEY_LOCALSTORAGE, JSON.stringify(response));
   localStorage.setItem('tokenID',response.idToken);
-  return JSON.stringify(response);
+  localStorage.setItem(`userId`,response.localId);
+  return response;
 }
 
 export default {
